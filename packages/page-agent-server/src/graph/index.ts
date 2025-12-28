@@ -31,9 +31,6 @@ const workflow = async (state: any) => {
         ],
         stateSchema: State,
     });
-    if (state.messages.length <= 1) {
-        state.messages.push(new AIMessage(state.extraPrompt));
-    }
     const response = await agent.invoke(state);
     return response;
 };

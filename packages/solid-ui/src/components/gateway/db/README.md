@@ -28,27 +28,28 @@ import { useDatabase } from '../db/useDatabase';
 import { subscribeRoutes, createRoute } from '../db/routes';
 
 export const MyComponent = () => {
-  useDatabase(); // 初始化数据库
-  
-  const [routes, setRoutes] = createSignal<Route[]>([]);
-  
-  onMount(async () => {
-    const unsubscribe = await subscribeRoutes((routesList) => {
-      setRoutes(routesList);
+    useDatabase(); // 初始化数据库
+
+    const [routes, setRoutes] = createSignal<Route[]>([]);
+
+    onMount(async () => {
+        const unsubscribe = await subscribeRoutes((routesList) => {
+            setRoutes(routesList);
+        });
+
+        onCleanup(() => {
+            unsubscribe();
+        });
     });
-    
-    onCleanup(() => {
-      unsubscribe();
-    });
-  });
-  
-  // ...
+
+    // ...
 };
 ```
 
 ## 数据模型
 
 ### Routes（路由）
+
 - `id`: string (主键)
 - `name`: string
 - `path`: string
@@ -59,6 +60,7 @@ export const MyComponent = () => {
 - `updatedAt`: number
 
 ### Logs（日志）
+
 - `id`: string (主键)
 - `method`: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS'
 - `path`: string
@@ -71,6 +73,7 @@ export const MyComponent = () => {
 - `responseBody`: string (可选)
 
 ### Settings（设置）
+
 - `id`: 'singleton' (单例)
 - `gatewayName`: string
 - `timeout`: number
@@ -84,6 +87,7 @@ export const MyComponent = () => {
 ## API 参考
 
 ### Routes
+
 - `getAllRoutes()` - 获取所有路由
 - `getRouteById(id)` - 根据 ID 获取路由
 - `createRoute(route)` - 创建路由
@@ -94,6 +98,7 @@ export const MyComponent = () => {
 - `subscribeRoutes(callback)` - 订阅路由变化
 
 ### Logs
+
 - `getAllLogs(limit?)` - 获取所有日志
 - `queryLogs(filters)` - 条件查询日志
 - `createLog(log)` - 创建日志
@@ -105,6 +110,7 @@ export const MyComponent = () => {
 - `subscribeLogs(callback, limit?)` - 订阅日志变化
 
 ### Settings
+
 - `getSettings()` - 获取设置
 - `updateSettings(updates)` - 更新设置
 - `resetSettings()` - 重置为默认值
@@ -126,4 +132,3 @@ export const MyComponent = () => {
 - [ ] 订阅功能正常（实时更新）
 - [ ] 数据持久化正常（刷新后数据保留）
 - [ ] 错误处理正常
-
