@@ -1,0 +1,21 @@
+{
+    "name": "page-six-agnet",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "packageManager": "pnpm@10.24.0",
+    "dependencies": {},
+    "devDependencies": {
+        "tailwindcss": "^4.1.18",
+        "@types/node": "^24.10.1",
+        "typescript": "~5.9.3",
+        "vite": "^6.0.0",
+        "vite-plugin-solid": "^2.11.10"
+    }
+}
