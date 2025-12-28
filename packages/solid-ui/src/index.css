@@ -44,17 +44,37 @@
         }
     }
 
+    @keyframes loading {
+        0% {
+            transform: translateX(-100%);
+        }
+        50% {
+            transform: translateX(200%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
     .animate-fadeIn {
         animation: fadeIn 0.5s ease-out forwards;
     }
 
     .glass-panel {
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.5);
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        border: 1px solid rgb(240, 240, 240);
         box-shadow:
             0 8px 32px 0 rgba(31, 38, 135, 0.07),
             inset 0 0 0 1px rgba(255, 255, 255, 0.2);
     }
+}
+
+.no-scroll-bar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+.no-scroll-bar::-webkit-scrollbar {
+    display: none; /* Webkit browsers */
 }

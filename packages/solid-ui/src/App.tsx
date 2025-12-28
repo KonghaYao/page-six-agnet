@@ -9,13 +9,8 @@ function App() {
             <Gateway />
 
             {/* Magic AI Assistant (Bottom Centered) */}
-            <ChatProvider
-                apiUrl={new URL('/api/langgraph', location as any as string).toString()}
-                showHistory={false}
-                fallbackToAvailableAssistants={true}
-            >
-                <MagicChat />
-            </ChatProvider>
+
+            <MagicChat />
         </div>
     );
 }

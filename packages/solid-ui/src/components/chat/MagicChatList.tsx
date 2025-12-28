@@ -14,13 +14,13 @@ export const MagicMessages = () => {
 
     return (
         <div class="flex-1 overflow-y-auto overflow-x-hidden flex flex-col scroll-smooth">
-            <div class="flex flex-col w-full">
-                <For each={[...renderMessages()].reverse()}>
-                    {(message, index) => (
-                        <MessageItem message={message} invisible={!(lastHumanMessage() === message || index() === 0)} />
-                    )}
-                </For>
-            </div>
+            {renderMessages().length && (
+                <div class="flex flex-col w-full py-4 px-4">
+                    <For each={[...renderMessages()].reverse()}>
+                        {(message, index) => <MessageItem message={message} />}
+                    </For>
+                </div>
+            )}
         </div>
     );
 };

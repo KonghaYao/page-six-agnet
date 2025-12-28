@@ -44,8 +44,10 @@ export async function updateSettings(updates: Partial<Omit<Settings, 'id'>>): Pr
     }
 
     await doc!.update({
-        ...updates,
-        updatedAt: Date.now(),
+        $set: {
+            ...updates,
+            updatedAt: Date.now(),
+        },
     });
 
     return doc!.toJSON() as Settings;
@@ -71,7 +73,9 @@ export async function resetSettings(): Promise<Settings> {
     let doc = await db.settings.findOne(SETTINGS_ID).exec();
 
     if (doc) {
-        await doc.update(defaultSettings);
+        await doc.update({
+            $set: defaultSettings,
+        });
     } else {
         await db.settings.insert(defaultSettings);
         doc = await db.settings.findOne(SETTINGS_ID).exec();
@@ -89,7 +93,7 @@ export async function subscribeSettings(callback: (settings: Settings) => void):
     // 确保设置存在
     await getSettings();
 
-    const subscription = db.settings.findOne(SETTINGS_ID).$.subscribe((doc) => {
+    const subscription = db.settings.findOne(SETTINGS_ID).$.subscribe((doc: any) => {
         if (doc) {
             callback(doc.toJSON() as Settings);
         } else {

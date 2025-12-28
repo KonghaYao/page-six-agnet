@@ -1,5 +1,5 @@
 import { createSignal, Show, For, createMemo, onMount, onCleanup } from 'solid-js';
-import { ArrowUp, Plus, History, X, Clock } from 'lucide-solid';
+import { ArrowUp, Plus, History, X, Clock, Loader2 } from 'lucide-solid';
 import { getExtraPrompt } from './tools';
 import { useChat } from '@langgraph-js/sdk/solid';
 
@@ -94,26 +94,13 @@ export const ChatInput = (props: ChatInputProps) => {
     });
 
     return (
-        <div class="w-full relative px-2 py-4 flex flex-col items-center pointer-events-none">
-            {/* Ambient Aura behind the input with dynamic colors */}
-            <div
-                class="ambient-aura"
-                style={{
-                    '--aura-color': props.disabled ? '#10b981' : '#3b82f6',
-                    '--aura-color-alt': props.disabled ? '#34d399' : '#8b5cf6',
-                    '--aura-color-3': props.disabled ? '#059669' : '#06b6d4',
-                    width: '100%',
-                    'max-width': '500px',
-                    height: '60px',
-                }}
-            />
-
+        <div class="w-full relative py-4 flex flex-col items-center pointer-events-none">
             <div class="w-full max-w-xl flex flex-col gap-3 relative">
                 {/* History Panel - Above Input */}
                 <Show when={showHistory() && chat.historyList().length > 0}>
                     <div
                         ref={historyPanelRef}
-                        class="w-full glass-panel rounded-2xl shadow-2xl pointer-events-auto z-50 max-h-[400px] flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 mb-2"
+                        class="absolute bottom-full left-0 right-0 w-full glass-panel rounded-2xl shadow-2xl pointer-events-auto z-50 max-h-[400px] flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 mb-2"
                     >
                         {/* Search Header */}
                         <div class="px-4 py-3 border-b border-gray-100/50 flex items-center gap-2">
@@ -152,7 +139,7 @@ export const ChatInput = (props: ChatInputProps) => {
                                 <For each={filteredHistory()}>
                                     {(item) => (
                                         <button
-                                            class={`w-full flex items-center justify-between px-3 py-1.5 mx-1 my-0.5 rounded-lg text-left transition-all group ${
+                                            class={` flex items-center justify-between px-3 py-1.5 mx-1 my-0.5 rounded-lg text-left transition-all group ${
                                                 chat.currentChatId() === item.thread_id
                                                     ? 'bg-blue-50 text-blue-700'
                                                     : 'text-gray-600 hover:bg-gray-50'
@@ -202,7 +189,7 @@ export const ChatInput = (props: ChatInputProps) => {
                 {/* Input Form */}
                 <div class="w-full flex items-center gap-3">
                     <form
-                        class="flex-1 relative flex items-center glass-panel rounded-2xl pointer-events-auto transition-all duration-300 focus-within:scale-[1.02] group"
+                        class="flex-1 relative flex items-center glass-panel rounded-2xl pointer-events-auto transition-all duration-300 focus-within:scale-[1.02] group "
                         onSubmit={handleSubmit}
                     >
                         {/* History button */}
@@ -254,19 +241,19 @@ export const ChatInput = (props: ChatInputProps) => {
                                 class={`w-8 h-8 flex items-center justify-center rounded-xl transition-all duration-300 ${
                                     inputValue().trim() && !props.disabled
                                         ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
-                                        : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                                        : props.disabled
+                                          ? 'bg-blue-50 text-blue-400'
+                                          : 'bg-gray-100 text-gray-300 cursor-not-allowed'
                                 }`}
                                 disabled={!inputValue().trim() || props.disabled}
                             >
-                                <ArrowUp size={18} strokeWidth={2.5} />
+                                <Show when={props.disabled} fallback={<ArrowUp size={18} strokeWidth={2.5} />}>
+                                    <Loader2 size={18} class="animate-spin" />
+                                </Show>
                             </button>
                         </div>
                     </form>
                 </div>
-            </div>
-
-            <div class="mt-2 text-[9px] text-gray-400 font-bold uppercase tracking-[0.2em] opacity-40">
-                Page Agent Ready
             </div>
         </div>
     );

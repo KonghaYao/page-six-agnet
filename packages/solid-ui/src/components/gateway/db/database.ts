@@ -1,12 +1,15 @@
 import { createRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
+import { RxDBUpdatePlugin } from 'rxdb/plugins/update';
 import { routeSchema } from './schema';
 import { logSchema } from './schema';
 import { settingsSchema } from './schema';
 
 // 添加查询构建器插件（支持 sort、limit 等方法）
 addRxPlugin(RxDBQueryBuilderPlugin);
+// 添加更新插件（支持 update 方法）
+addRxPlugin(RxDBUpdatePlugin);
 
 export interface GatewayDatabase {
     routes: any; // RxCollection<Route>

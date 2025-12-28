@@ -51,8 +51,10 @@ export async function updateRoute(id: string, updates: Partial<Omit<Route, 'id' 
     }
 
     await doc.update({
-        ...updates,
-        updatedAt: Date.now(),
+        $set: {
+            ...updates,
+            updatedAt: Date.now(),
+        },
     });
 
     return doc.toJSON() as Route;
@@ -83,8 +85,10 @@ export async function toggleRouteStatus(id: string): Promise<Route> {
 
     const newStatus = doc.status === 'active' ? 'paused' : 'active';
     await doc.update({
-        status: newStatus,
-        updatedAt: Date.now(),
+        $set: {
+            status: newStatus,
+            updatedAt: Date.now(),
+        },
     });
 
     return doc.toJSON() as Route;
@@ -99,8 +103,12 @@ export async function incrementRouteRequests(id: string): Promise<void> {
 
     if (doc) {
         await doc.update({
-            requests: (doc.requests || 0) + 1,
-            updatedAt: Date.now(),
+            $inc: {
+                requests: 1,
+            },
+            $set: {
+                updatedAt: Date.now(),
+            },
         });
     }
 }
